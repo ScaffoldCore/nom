@@ -1,7 +1,7 @@
 {
-    "name": "nom",
+    "name": "@scaffold-core/nom",
     "type": "module",
-    "version": "0.0.0.alpha.01",
+    "version": "0.0.1",
     "description": "🏖️ Provide better support for the pnpm catalog",
     "author": "lonewolfyx",
     "license": "MIT",
@@ -18,9 +18,14 @@
         "pnpm",
         "cli"
     ],
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "bin": {
         "nom": "./bin/nom.js"
     },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "dev": "tsdown --watch",
         "build": "tsdown",
@@ -48,5 +53,9 @@
         "tsdown": "^0.12.7",
         "tsx": "^4.20.1",
         "typescript": "^5.8.3"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org",
+        "access": "public"
     }
 }

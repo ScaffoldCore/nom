@@ -9,13 +9,14 @@ import type { ICommandOptions } from '@/types/options'
 export function getPnpmParams(commandName: string, pkgs: string[], options: ICommandOptions) {
     const pnpmParams: string[] = []
 
-    if (options.filter) {
-        pnpmParams.push(`-F`)
-        pnpmParams.push(`"${options.filter}"`)
-    }
-
     if (pkgs) {
         pnpmParams.push(commandName)
+
+        if (options.filter) {
+            pnpmParams.push(`-F`)
+            pnpmParams.push(options.filter)
+        }
+
         pkgs.map((item: string) => (pnpmParams.push(item)))
     }
 

@@ -4,7 +4,7 @@ import { findUp } from 'find-up'
 import { construct, crush } from 'radash'
 import { parseDocument } from 'yaml'
 import {
-    deepMerge,
+    deepMergeVersion,
     filterArray,
     getPackageJsonPaths,
     getPnpmWorkSpacePath,
@@ -69,7 +69,7 @@ export async function updatePnpmWorkSpaceYaml() {
 
     const workspaceYaml = {
         ...workspaceJson,
-        catalogs: filterArray(deepMerge(catalogs, workspaceJson.catalogs)),
+        catalogs: filterArray(deepMergeVersion(catalogs, workspaceJson.catalogs)),
     }
 
     await writePnpmWorkSpaceYaml(pnpmWorkspaceYamlPath, workSpaceYamlSpacing(workspaceYaml))

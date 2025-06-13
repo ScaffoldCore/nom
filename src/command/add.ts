@@ -1,5 +1,8 @@
+import type { ICommandOptions } from '@/types/options'
 import options from '@/options.ts'
-import { header } from '@/utils/utils.ts'
+import { header, run } from '@/utils'
+import { getPnpmParams } from '@/utils/params.ts'
+import { updatePnpmWorkSpaceYaml } from '@/workspace.ts'
 
 export default {
     command: {
@@ -7,12 +10,13 @@ export default {
         description: 'Install all dependencies for a project',
     },
     options,
-    action: (pkgs: string[], options: {
-        dev: boolean
-        workspace: boolean
-        catalog?: string
-    }) => {
+    action: async (pkgs: string[], options: ICommandOptions) => {
         header()
-        console.log('add', pkgs, options)
+
+        const pnpmParams = getPnpmParams('add', pkgs, options)
+
+        await run(pnpmParams)
+
+        await updatePnpmWorkSpaceYaml()
     },
 }

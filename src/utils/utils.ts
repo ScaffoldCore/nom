@@ -144,7 +144,7 @@ type PlainObject = Record<string, any>
  * @param target
  * @param source
  */
-export function deepMerge<T extends PlainObject, U extends PlainObject>(target: T, source: U): T & U {
+export function deepMergeVersion<T extends PlainObject, U extends PlainObject>(target: T, source: U): T & U {
     const result: any = { ...target }
 
     for (const key in source) {
@@ -153,7 +153,7 @@ export function deepMerge<T extends PlainObject, U extends PlainObject>(target: 
             const targetValue = target[key]
 
             if (isObject(sourceValue) && isObject(targetValue)) {
-                result[key] = deepMerge(targetValue, sourceValue)
+                result[key] = deepMergeVersion(targetValue, sourceValue)
             }
             else if (isSemverLike(targetValue) && isSemverLike(sourceValue)) {
                 const targetVersion = minVersion(targetValue)

@@ -4,6 +4,7 @@ import path, { join } from 'node:path'
 import { findUp } from 'find-up'
 import { glob } from 'glob'
 import { dim, yellow } from 'kleur/colors'
+import { gt, minVersion, validRange } from 'semver'
 import { Document, stringify } from 'yaml'
 import { ROOT_PATH } from '@/utils/alias.ts'
 import { version } from '../../package.json'
@@ -154,6 +155,17 @@ export function deepMerge<T extends PlainObject, U extends PlainObject>(target: 
             if (isObject(sourceValue) && isObject(targetValue)) {
                 result[key] = deepMerge(targetValue, sourceValue)
             }
+            else if (isSemverLike(targetValue) && isSemverLike(sourceValue)) {
+                const targetVersion = minVersion(targetValue)
+                const sourceVersion = minVersion(sourceValue)
+
+                if (targetVersion && sourceVersion) {
+                    result[key] = gt(targetVersion, sourceVersion) ? targetValue : sourceValue
+                }
+                else {
+                    result[key] = sourceValue
+                }
+            }
             else {
                 result[key] = sourceValue
             }
@@ -169,4 +181,14 @@ export function deepMerge<T extends PlainObject, U extends PlainObject>(target: 
  */
 export function isObject(value: unknown): value is PlainObject {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+/**
+ * check if a value is a semver range
+ * @param value
+ */
+export function isSemverLike(value: any): value is string {
+    return typeof value === 'string'
+        && !value.includes(':') // 排除 catalog:dev 这类
+        && !!validRange(value) // 只允许合法 semver range
 }

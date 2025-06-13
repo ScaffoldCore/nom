@@ -13,4 +13,8 @@ export default [
         rawName: '-c, --catalog [catalog]',
         description: 'pnpm workspace catalog',
     },
+    {
+        rawName: '-F, --filter [package_selector]',
+        description: 'Filtering allows you to restrict commands to specific subsets of packages',
+    },
 ]
